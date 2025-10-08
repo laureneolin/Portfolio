@@ -1,22 +1,22 @@
-# Lauren Eolin – Technical Writing Portfolio
+# Technical Writing Portfolio
 
-Welcome to my technical writing portfolio! Here, you’ll find examples of work I’m capable of creating, demonstrating my skills in producing clear, concise, and structured documentation. Due to NDAs, many pieces are recreations of actual work and contain no confidential details. 
-
----
-
-## Portfolio Highlights
-- **[API Reference Example](https://github.com/laureneolin/portfolio/blob/Technical-Writing/Mission_Control_API_Reference_Guide.md):** A sample API documentation showing endpoints, parameters, and usage guidelines.
-- **[System Overview + Integration Guide](https://github.com/laureneolin/portfolio/blob/Technical-Writing/System_Overview_Integration_Guide.md):** High-level system explanations paired with step-by-step integration instructions.
-- **Quick Start Manual:** A concise guide to help users get up and running with a product efficiently.
-- **Configuration Checklist:** Practical, easy-to-follow checklists for system setup and configuration.
-- **Style Guide:** Documentation of writing standards, formatting rules, and style conventions.
+Welcome to my **Technical Writing Portfolio**, a collection of writing samples that showcase my ability to translate complex technical systems, terminology, and data into easy-to-understand content.
 
 ---
 
-## How to Use This Portfolio
-Visit the [Technical Writing branch](https://github.com/laureneolin/portfolio/edit/Technical-Writing) to view my work. Feel free to explore and see examples of my structure, clarity, and attention to detail.
+## Portfolio Contents
+
+Due to my work in proprietary environments, I cannot share what I have made in the field, however I have recreated the average document I would work on so you can have a general idea of my skillset!
+
+| Document | Description |
+|-----------|--------------|
+| **API Reference Guide** | A structured guide detailing fictional API endpoints, parameters, responses, and use cases. Demonstrates precision, consistency, and understanding of developer-facing content. |
+| **System Overview + Integration Guide** | A fictional system created to demonstrate my ability to explain architecture, workflows, and integration steps for a software environment. |
+
+---
+## Contact Info:
+- **LinkedIn:** [linkedin.com/in/laureneolin](https://www.linkedin.com/in/lauren-eolin)  
+- **Email:** [laureneolin@gmail.com](mailto:laureneolin@gmail.com)
 
 ---
 
-## Contact
-For inquiries or collaboration opportunities, reach out via [LinkedIn](https://www.linkedin.com/in/lauren-eolin) or [Email](mailto:laureneolin@gmail.com)
