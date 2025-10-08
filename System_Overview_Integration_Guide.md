@@ -1,14 +1,14 @@
 # Autonomous Fleet Coordination System (AFCS) — System Overview & Integration Guide
 
-## Introduction
+## Overview
 
-The Autonomous Fleet Coordination System (AFCS) is a cloud-based system designed to manage and monitor fleets of unmanned surface vehicles (USVs) and unmanned underwater vehicles (UUVs). AFCS allows technical integrators, system administrators, and developers to connect their own mission control or data systems, enabling coordination and unified automation across multiple interfaces and offers modularity, scalability, and security.
+Unmanned surface vehicle (USV) and unmanned underwater vehicle (UUV) fleets are managed and observed by the cloud-based Autonomous Fleet Coordination System (AFCS). Technical integrators, system administrators, and developers can connect their own mission control or data systems with AFCS, which provides modularity, scalability, and security while facilitating coordination and unified automation across various interfaces.
 
-This guide will outline the AFCS architecture, detailing how its services interact, and how to integrate with APIs for mission scheduling, telemetry data access, and real-time alerts.
+The AFCS architecture will be described in this guide, along with how its services work together and how to integrate with APIs for real-time alerts, telemetry data access, and mission scheduling.
 
-## System Overview
+## Overview of the System
 
-The Autonomous Fleet Coordination System (AFCS) employs modular, service-oriented architecture that distributes control and monitoring of autonomous vehicles. The system consists of interconnected services that manage missions, vessel telemetry, event processing, and operator interfaces.
+Control and monitoring of autonomous vehicles are distributed by the Autonomous Fleet Coordination System (AFCS), which uses a modular, service-oriented architecture. Mission management, vessel telemetry, event processing, and operator interfaces are all handled by the system's networked services.
 
 ```mermaid
 graph TD
@@ -61,14 +61,14 @@ graph TD
     B2 --> E2
 ```
 
-### Core Services:
-- Mission Control Service — handles mission scheduling, coordination, and lifecycle management.
-- Telemetry Service — collects, normalizes, and streams live vessel telemetry data (e.g.,: position, battery level, health status).
-- Fleet **Gateway** — provides a secure communication bridge between vessels and cloud infrastructure.
-- Event Processing Service — manages alerts, logs, and webhook distribution to external systems.
-- User Access & Security Service — manages authentication, authorization, and access control via tokens and roles.
+### Core Services: 
+- Mission Control Service — manages the scheduling, coordination, and lifecycle of missions.
+- Telemetry Service — gathers, normalizes, and transmits real-time vessel telemetry data, such as position, battery level, and health status.
+- Fleet Gateway — secures a communication link between ships and cloud infrastructure.
+- Event Processing Service — controls the distribution of webhooks to external systems, logs, and alerts.
+- User Access & Security Service — using roles and tokens to control access, authorization, and authentication.
 
-All services use HTTPS and message queues to communicate, which ensures asynchronous and reliable data exchange.
+All services communicate via message queues and HTTPS, ensuring dependable and asynchronous data exchange.
 
 ### Data Flow Summary:
 
@@ -104,11 +104,11 @@ The Mission Control Service dashboard updates in real time as missions progress
 
 ## Core Components
 
-The AFCS is composed of several key components that work together to ensure full fleet management and integration capabilities. As described above, the following core components make up the Helix platform, each responsible for specific sets of functions while seamlessly communicating with each other to maintain system cohesion.
+To guarantee complete fleet management and integration capabilities, the AFCS is made up of a number of essential parts, each of which is in charge of carrying out particular sets of tasks while coordinating with the others to keep the system cohesive.
 
 ### Helix Core API
 
-The **Helix Core API’s** main functions are mission creation, telemetry retrieval, and endpoint authentication. It provides programmatic control and management of missions and vessels, supporting REST interfaces and SDKs for multiple programming languages. It communicates closely with the **Helix Orchestrator** to coordinate mission logic and ensures that live vessel data is accessible to other services.
+The creation of missions, telemetry retrieval, and endpoint authentication are the primary functions of the **Helix Core API's**. With support for REST interfaces and SDKs for various programming languages, it offers programmatic control and management of missions and vessels. In order to coordinate mission logic and guarantee that other services can access live vessel data, it works closely with the **Helix Orchestrator**.
 
 **Inputs and Outputs:**
 
@@ -146,7 +146,7 @@ Authorization: Bearer <token>
 
 ### Helix Orchestrator
 
-The **Helix Orchestrator** handles decision-making, mission logic, and fail-safe operations. It determines how missions are executed, manages priority handling (e.g., mission priority levels, conflict resolution, dynamic re-prioritization, resource allocation), and ensures that autonomous vehicles respond to changing conditions or errors appropriately. The **Orchestrator** communicates with the other components via internal APIs, primarily interfacing with the **Helix Core API** for mission management and the **Helix Stream** for real-time telemetry and event updates.
+Decision-making, mission logic, and fail-safe procedures are managed by the **Helix Orchestrator**. It decides how missions are carried out, controls priority handling (such as mission priority levels, conflict resolution, dynamic re-prioritization, and resource allocation), and makes sure that autonomous cars react correctly to errors or changing circumstances. Through internal APIs, the **Orchestrator** interacts with the other parts. It mainly uses the **Helix Core API** for mission management and the **Helix Stream** for real-time telemetry and event updates.
 
 **Inputs and Outputs:**
 
@@ -212,7 +212,7 @@ Authorization: Bearer <token>
 
 ### Helix Stream
 
-The **Helix Stream** performs live updates, supports message queues, and manages event subscriptions. It is responsible for streaming telemetry, events, and status changes to clients while ensuring ordered, reliable event delivery. The **Helix Stream** communicates with the other components via WebSockets, message queues, and webhook subscriptions, providing a continuous data flow between the **Helix Core API**, **Orchestrator**, and connected clients.
+The **Helix Stream** handles event subscriptions, supports message queues, and updates in real time. It is in charge of providing clients with streaming telemetry, events, and status updates while guaranteeing dependable, well-organized event delivery. The **Helix Stream** maintains a constant data flow between the **Helix Core API**, **Orchestrator**, and linked clients by interacting with the other components through WebSockets, message queues, and webhook subscriptions.
 
 **Inputs and Outputs:**
 
@@ -262,7 +262,7 @@ Authorization: Bearer <token>
 
 ### Helix Secure Gateway
 
-The **Helix Secure Gateway** handles token management, rate limiting, and encryption. Acting as a secure bridge between AFCS components and external clients, it enforces authentication and access policies to protect system integrity and maintain consistent access control across services. The **Gateway** uses HTTPS endpoints to communicate with the **Orchestrator** and **Core API**, allowing for smooth integration among the components.
+Token management, rate limiting, and encryption are handled by the **Helix Secure Gateway**. It acts as a secure connection between AFCS components and external clients, safeguarding system integrity and maintaining consistent access control across services. The **Gateway** uses HTTPS endpoints to connect to the **Orchestrator** and **Core API** in order to enable smooth component integration.
 
 **Inputs and Outputs:**
 
@@ -341,18 +341,17 @@ print(mission.status)
 
 **Requirements:**
 
-Client credentials (e.g., `client_id`, `client_secret`) for the **Helix Secure Gateway.**
-Network access to the API base via HTTPS.
-Secure storage for secrets and tokens.
-Clock synchronization on client servers — important for replay protection.
+- Client information for the **Helix Secure Gateway** (e.g.,`client_id` and `client_secret`).
+- HTTPS-based network access to the API base.
+- Safekeeping of tokens and secrets.
+- Client-server clock synchronization is crucial for replay protection.
 
-### Step 1. Authentication
+### Step 1: Authentication
 
-1. Authentication is the beginning of all API systems, where the client must receive a token to move forward with inputting requests. Requests without a valid token will return `401 Unauthorized` or `403 Forbidden` errors.
-2. Client requests a token from the **Gateway** (`POST /v1/auth/token`) with `client_id` and `client_secret`.
-3. The **Gateway** returns a Bearer token (`access_token`) with `expires_in` (120 seconds)
-Client attaches the Bearer token (`Authorization: Bearer <token>`) to subsequent requests.
-Tokens are valid for 120 seconds — clients must re-authenticate after expiration
+1. All API systems start with authentication, in which the client needs to obtain a token in order to proceed with submitting requests. `401 Unauthorized` or `403 Forbidden` errors will be returned for requests that do not contain a valid token.
+2. The client uses `client_id` and `client_secret` to request a token from the **Gateway** (`POST /v1/auth/token`).
+3. The Bearer token (`access_token`) with `expires_in` (120 seconds) is returned by the **Gateway**. The client appends the Bearer token (`Authorization: Bearer <token>`) to any further requests.
+Clients must re-authenticate after the tokens' 120-second expiration.
 
 ### Example — Token Generation
 
@@ -389,10 +388,10 @@ Content-Type: application/json
 
 ### Step 2. Mission Creation
 
-Mission creation occurs through the **Helix Core API**. The **Core API** is used to create and schedule missions for autonomous vehicles, which is essential for initiating fleet operations.
+Missions are created using the **Helix Core API**. The **Core API** is required to initiate fleet operations and is used to create and schedule autonomous vehicle missions.
 
-1. Client submits mission parameters to the API using a valid Bearer token (`Authorization: Bearer <token>`)
-2. The **Core API** validates the input, schedules the mission, and communicates with the **Orchestrator**
+1. The client sends mission parameters to the API using a valid Bearer token (`Authorization: Bearer <token>`).
+2. The **Core API** communicates with the **Orchestrator**, schedules the mission, and checks the input.
 3. A mission ID (`mission_id`) and status (`status`) are returned for tracking and updates.
 
 ### Example — Mission Creation
@@ -425,9 +424,9 @@ Authorization: Bearer gmrglwfwf06060245
 
 **Error Handling Notes:**
 
-- `401 Unauthorized` — if the token is missing or invalid.
-- `400 Bad Request` — if required fields are missing or incorrect.
-- `404 Not Found` — if the specific vessel does not exist.
+- `401 Unauthorized` — The token is missing or invalid.
+- `400 Bad Request` — Required fields are missing or incorrect.
+- `404 Not Found` — The specific vessel does not exist.
 
 ### Example — `409 Conflict` Error
 
@@ -459,13 +458,13 @@ Authorization: Bearer gmrglwfwf06060245
 }
 ```
 
-### Step 3. Telemetry Retrieval
+### Step 3: Retrieving Telemetry
 
-Telemetry retrieval is an essential process that shows the client real-time operational awareness and mission safety. Using **Helix Stream** for live data and Helix Core API for on-demand pulls, telemetry retrieval requires valid authentication, active vessel connections, and synchronized data channels to ensure accurate, timely updates throughout mission execution.
+In order to provide the client with real-time operational awareness and mission safety, telemetry retrieval is a crucial procedure. Valid authentication, active vessel connections, and synchronized data channels are necessary for telemetry retrieval, which uses **Helix Stream** for live data and **Helix Core API** for on-demand pulls. This ensures accurate and timely updates during mission execution.
 
-1. Client subscribes to telemetry via `/v1/stream/subscribe` or requests summary data via `/v1/telemetry/{vessel_id}`.
-2. The system authenticates the request by checking the token.
-3. Data is streamed or returned in structured JSON format (e.g., position, velocity, battery level).
+1. The client uses `/v1/stream/subscribe` to subscribe to telemetry or `/v1/telemetry/{vessel_id}` to request summary data.
+2. The token is checked by the system to verify the request.
+3. Structured JSON data (e.g., position, velocity, battery level) is streamed or returned.
 
 ### Example — Telemetry Stream Subscription
 
@@ -504,11 +503,11 @@ Authorization: Bearer gmrglwfwf06060245
 
 ### Step 4. Event & Status Updates
 
-Event and Status updates ensure operational transparency by keeping the client informed of mission state changes (e.g., launched, paused, completed, error). Depending on the configuration, these updates could come from either the **Helix Orchestrator** or the **Helix Stream**.
+By informing the client of changes to the mission state (e.g., launched, paused, completed, error), event and status updates guarantee operational transparency. These updates may originate from the **Helix Orchestrator** or the **Helix Stream**, depending on the setup.
 
-1. Client subscribes to mission or system event channels (e.g., `/v1/events/subscribe`).
-2. The system verifies authentication and active mission context.
-3. Events are streamed live or received in batches depending on the delivery method (e.g., WebSocket, REST).
+1. The client subscribes to system or mission event channels (e.g., `/v1/events/subscribe`).
+2. The system confirms the active mission context and authentication.
+3. Depending on the delivery method (e.g., WebSocket, REST), events are either received in batches or streamed live.
 
 Example event types: `mission_status`. `vessel_health`, `system_health`.
 
@@ -547,12 +546,12 @@ Authorization: Bearer gmrglwfwf06060245
 
 ### Step 5. Command Execution
 
-Command execution allows clients to send operational directives, including direct control or mission adjustment commands, to vessel. This step can only occur after authentication and mission activation, and ensures real-time responsiveness and operational safety.
+Clients can send operational directives to the vessel through command execution, such as direct control or mission adjustment commands. This step, which guarantees operational safety and real-time responsiveness, can only take place following authentication and mission activation.
 
-1. Client issues commands (e.g., `pause_mission`, `resume`, `abort`, `reroute`) through the **Helix Core API**.
-2. The command is validated by the **Orchestrator** to ensure safety and permission compliance.
-3. The system broadcasts the action to the assigned vessel via **Helix Stream**.
-4. A confirmation or error message is returned to the client.
+1. The client uses the **Helix Core API** to issue commands (e.g., `pause_mission`, `resume`, `abort`, `reroute`).
+2. To guarantee safety and permission compliance, the **Orchestrator** verifies the command.
+3. Using **Helix Stream**, the system broadcasts the action to the designated vessel.
+4. The client receives a confirmation or error message back.
 
 ### Example — Mission Command
 
@@ -657,10 +656,10 @@ The AFCS uses permission tiers to control access. Each token carries role-based 
 
 ### Secure Communication & Token Usage
 
-- HTTPS — All requests to AFCS components must use HTTPS to ensure encryption in transit.
-- HMAC (Message Validation) — Certain endpoints (e.g., Helix Stream event delivery) require an HMAC signature to verify message authenticity and prevent tampering.
-- Rate Limits — The **Helix Secure Gateway** enforces request limits per client to prevent abuse. Exceeding the limits returns a `429 Too Many Requests` response.
-- Token Expiration — AFCS tokens are temporary (120 seconds) to reduce the risk of replay attacks. Clients must re-authenticate and request a new token once expired.
+- HTTPS — To guarantee encryption while in transit, all requests to AFCS components must use HTTPS.
+- HMAC (Message Validation) — To ensure message authenticity and guard against manipulation, some endpoints (like Helix Stream event delivery) need an HMAC signature.
+- Rate Limits — To guard against misuse, the **Helix Secure Gateway** imposes request limits for each client. A `429 Too Many Requests` response is returned when the limits are exceeded.
+- Token Expiration — To lessen the possibility of replay attacks, AFCS tokens are only valid for a period of 120 seconds. After a token expires, clients need to request a new one and re-authenticate.
 
 ### Example — Token Request
 
@@ -705,9 +704,9 @@ These recommendations help developers integrate with the AFCS efficiently, secur
 - Version Compatibility — Verify integrations against compatibility with the current AFCS API version, with endpoints and payloads validated before production.
 
 ### Request Management
-- Batch Requests — Combine multiple operations in a single API request to improve efficiency and reduce network overhead.
-- Rate-Limiting Awareness — Follow API rate limits to avoid throttling or service disruption.
-- Idempotency — Use unique mission patterns with mission-critical commands to avoid unintended duplicate actions.
+- Batch Requests — Increase productivity and lower network overhead, combine several operations into a single API request.
+- Rate-Limiting Awareness — Prevent throttling or service interruption, abide by API rate limits.
+- Idempotency —  Block inadvertent duplication of actions, use distinct mission patterns with mission-critical commands.
 
 ### Security Hygiene
 - Secure Key Storage — Store client credentials and API keys in encrypted vaults or environment variables, but never in source code or logs.
@@ -767,3 +766,4 @@ These recommendations help developers integrate with the AFCS efficiently, secur
 | UTC | Coordinated Universal Time. The standardized global time reference used for all AFCS timestamps |
 | Webhook | An automated HTTP callback that allows the AFCS to send event notifications to external systems in real time |
 | Payload | The body content of a request or response, typically containing mission data, parameters, or configuration information |
+
