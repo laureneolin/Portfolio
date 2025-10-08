@@ -10,8 +10,8 @@ Due to my work in proprietary environments, I cannot share what I have made in t
 
 | Document | Description |
 |-----------|--------------|
-| **API Reference Guide** | A structured guide detailing fictional API endpoints, parameters, responses, and use cases. Demonstrates precision, consistency, and understanding of developer-facing content. |
-| **System Overview + Integration Guide** | A fictional system created to demonstrate my ability to explain architecture, workflows, and integration steps for a software environment. |
+| [**API Reference Guide**](https://github.com/laureneolin/Portfolio/blob/Technical-Writing/Mission_Control_API_Reference_Guide.md) | A structured guide detailing fictional API endpoints, parameters, responses, and use cases. Demonstrates precision, consistency, and understanding of developer-facing content. |
+| **[System Overview + Integration Guide](https://github.com/laureneolin/Portfolio/blob/Technical-Writing/System_Overview_Integration_Guide.md)** | A fictional system created to demonstrate my ability to explain architecture, workflows, and integration steps for a software environment. |
 
 ---
 ## Contact Info:
