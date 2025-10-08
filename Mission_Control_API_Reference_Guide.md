@@ -169,10 +169,12 @@ Authorization: Bearer gfamedorn12998
 
 ## Rate Limits & Versioning — Purpose
 
-### Rate Limits: A maximum of 120 requests per minute are permitted for each authorization token. Up to 20 additional requests in brief bursts are permitted.
+### Rate Limits: 
+A maximum of 120 requests per minute are permitted for each authorization token. Up to 20 additional requests in brief bursts are permitted.
 
-### Versioning: V1 is the current version of the Mission Control API. Every endpoint will have the version in the URL path, such as `/v1/missions`. New features or modifications might be added in later iterations. Until support is formally deprecated, clients who specify an older version will continue to receive compatible responses. 
-*Note: v1 is the only version available.
+### Versioning: 
+V1 is the current version of the Mission Control API. Every endpoint will have the version in the URL path, such as `/v1/missions`. New features or modifications might be added in later iterations. Until support is formally deprecated, clients who specify an older version will continue to receive compatible responses. 
+*Note: v1 is the only version available.*
 
 ### Example: Requesting a Mission with Versioning
 ```http
@@ -401,3 +403,4 @@ Events That Are Optional — not urgent, but helpful and/or instructive.
 - `vessel.telemetry` — regular telemetry updates (battery, position, and speed)
 - `vessel.sensor_data` — sensor-specific information for analysis
 - `log.entry` — info messages, warnings, or general logging.
+
