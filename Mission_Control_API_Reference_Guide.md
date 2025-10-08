@@ -2,12 +2,12 @@
 
 ## Overview
 
-The Mission Control API **(v1)** provides programmatic control and monitoring of autonomous surface vessels **(ASVs)** and their associated fleet operations, including mission planning, telemetry, configuration, logging, and event webhooks.
+Programmatic control and monitoring of autonomous surface vessels (ASVs) and the fleet operations that go along with them, such as mission planning, telemetry, configuration, logging, and event webhooks, are made possible by the Mission Control API (v1).
 
-This API is designed to balance operational flexibility with the reliability and traceability requirements common to autonomous systems.Typical users include systems integrators, mission operators, and automation engineers who need to script or automate fleet behaviors. Common use cases are mission coordination (create/launch/abort), live telemetry reporting, configuration management, and retrieval of mission logs for analysis.
+The reliability and traceability requirements typical of autonomous systems are balanced with operational flexibility in the design of this API. Systems integrators, mission operators, and automation engineers who need to program or automate fleet behaviors are examples of typical users. Mission coordination (`create`, `launch`, and `abort`), live telemetry reporting, configuration management, and the retrieval of mission logs for analysis are examples of common use cases.
 
 ### Example: 	
-`GET /vessels/{vessel_id}/logs?since=ISO8601` — retrieves vessel logs with event timestamps, severity levels, sources, messages, and contextual details.
+`GET /vessels/{vessel_id}/logs?since=ISO8601` — retrieves logs of vessels which contain event timestamps, severity levels, sources, messages, and other relevant information.
 
 ## Appendix/Reference and Quick Start Guide
 
@@ -69,7 +69,7 @@ Content-Type: application/json
 "expires_in": 120
 }
 ```
-**Use the token for subsequent requests:**
+**Use the token for future requests:**
 
 ```http
 Authorization: Bearer gfamedorn12998
@@ -134,7 +134,7 @@ Authorization: Bearer gfamedorn12998
 
 ## Authentication & Authorization
 
-Tokens are obtained via `POST /auth/token` using a valid `client_id` and `client_secret`. Each token allows up to **120 requests per minute** (burst requests allowed) and expires after **120 seconds**. After expiration, requests return a `403 Forbidden` response.
+Using a valid `client_id` and `client_secret`, tokens are acquired via `POST /auth/token`. Each token expires after 120 seconds and can receive up to 120 requests per minute (burst requests are permitted). Requests receive a `403 Forbidden` response after expiration.
 
 ### Example: Obtain a Token
 
@@ -168,11 +168,11 @@ Authorization: Bearer gfamedorn12998
 
 
 ## Rate Limits & Versioning — Purpose
-### Rate Limits:
-Each authorization token allows up to **120 requests per minute**. Short bursts of up to **20 extra requests** are allowed.
-### Versioning:
-The Mission Control API is currently at ***v1***. All endpoints will include the version in the URL path, i.e., `/v1/missions`. Future versions may introduce new features or changes. Clients specifying an older version will continue to receive compatible responses until support is officially deprecated. 
-*Note: there is no version before v1.*
+
+### Rate Limits: A maximum of 120 requests per minute are permitted for each authorization token. Up to 20 additional requests in brief bursts are permitted.
+
+### Versioning: V1 is the current version of the Mission Control API. Every endpoint will have the version in the URL path, such as `/v1/missions`. New features or modifications might be added in later iterations. Until support is formally deprecated, clients who specify an older version will continue to receive compatible responses. 
+*Note: v1 is the only version available.
 
 ### Example: Requesting a Mission with Versioning
 ```http
@@ -189,18 +189,17 @@ Content-Type: application/json
 	"error": "Rate limit exceeded. Retry after 30 seconds."
 }
 ```
+## Core Endpoints — Objective
+The primary API operations are logically grouped and documented in this section. The method, path, description, parameters, sample requests and responses, and common error codes are all included in each endpoint.
 
-## Core Endpoints — Purpose
-This section documents the main API operations, grouped logically. Each endpoint includes the method, path, description, parameters, request and response examples, and common error codes.
-
-#### Reference Enums:
-##### - **Mission Priority:** See Appendix → Mission Priority Enum (`low`, `routine`, `high`).
-##### - **Fail-Safe Modes:** See Appendix → Fail-Safe Modes (`return_to_base`, `hold_position`, `continue_autonomous`).
-##### - **Vessel Types:** See Appendix → Vessel Types (`ASV`, `ROV`, `USV`, `UUV`).
+#### Reference Enums: 
+##### - **Mission Priority:** Refer to Appendix → Mission Priority Enum (`low`, `routine`, `high`).
+##### - **Fail-Safe Modes:** Refer to Appendix (`return_to_base`, `hold_position`, `continue_autonomous`).
+##### - **Vessel Types:** Refer to Appendix → Vessel Types (`ASV`, `ROV`, `USV`, `UUV`).
 
 ### Missions:
 
-The `missions` endpoint will allow the client to **create, launch, abort, list, and get details about specific missions**.
+The client can **create, launch, abort, list, and get details about specific missions** using the `missions` endpoint.
 
 | Method | Path | Description |
 |--------|------|------------|
@@ -239,7 +238,7 @@ The `missions` endpoint will allow the client to **create, launch, abort, list, 
 ```
 ## Vessels & Telemetry
 
-The `vessels` endpoint will allow the client to **receive lists, register, and receive details for a vessel**. The `telemetry` endpoint provides **live data for vessels**, including position, heading, speed, battery status, and sensor summaries.
+The client will be able to **receive lists, register, and receive details for a vessel** through the `vessels` endpoint. Position, heading, speed, battery life, and sensor summaries are among the **live data for vessels** that are provided by the `telemetry` endpoint.
 
 | Method | Path | Description |
 |--------|------|------------|
@@ -264,8 +263,7 @@ The `vessels` endpoint will allow the client to **receive lists, register, and r
 
 ## System Configuration
 
-The `system` endpoint allows the client to **receive and update parameters**.
-*Note: Updating parameters requires **admin role***
+The client can **receive and update parameters** via the `system` endpoint. *Note: **admin role** is required to update parameters.*
 
 | Method | Path | Description |
 |--------|------|------------|
@@ -283,9 +281,9 @@ The `system` endpoint allows the client to **receive and update parameters**.
 }
 ```
 
-## Diagnostics & Logs
+## Logs & Diagnostics
 
-The `logs` endpoint allows clients to **retrieve system logs**, while the `events` endpoint provides **mission event timelines** (e.g.,: waypoint reached, errors)
+While the `events` endpoint offers **mission event timelines** (such as waypoint reached, errors), the `logs` endpoint enables clients to **retrieve system logs**.
 
 | Method | Path | Description |
 |--------|------|------------|
@@ -307,11 +305,11 @@ The `logs` endpoint allows clients to **retrieve system logs**, while the `event
 
 ## Webhooks
 
-Also known as event push, the `webhooks` endpoint allows clients to register, list, and delete event subscriptions.
-Events include: `mission.created`, `mission.status_changed`, `vessel.telemetry`, `vessel.log`
+The `webhooks` endpoint, also referred to as event push, enables clients to create, list, and remove event subscriptions.
+`mission.created`, `mission.status_changed`, `vessel.telemetry`, and `vessel.log` are examples of events.
 *Note: HMAC signature required in header `X-Signature` for authenticity*
-`POST /webhooks` — register webhook URL and event types
-Webhook payload includes: `event_type`, `timestamp`, `resource`, and `data`
+`POST /webhooks` — register event types and webhook URLs
+Included in the webhook payload are `event_type`, `timestamp`, `resource`, and `data`.
 | Method | Path | Description |
 |--------|------|------------|
 | POST  | /v1/webhooks | Register webhook URL and event types |
@@ -344,9 +342,9 @@ Clients may encounter the following error codes:
 
 ## Webhooks & Event Handling
 
-### Webhook Event Types
+### Types of Webhook Events
 
-Webhooks enable clients to receive event-driven notifications and real-time updates. Events are grouped into three categories: `mission`, `vessel`, and `system`/`fleet`.
+Clients can get real-time updates and event-driven notifications thanks to webhooks. Three categories are used to classify events: `mission`, `vessel`, and `system`/`fleet`.
 
 #### Mission Events
 
@@ -378,29 +376,28 @@ Webhooks enable clients to receive event-driven notifications and real-time upda
 
 ### Security Considerations
 
-- **Authentication & Authorization:** Only clients with valid access tokens can register webhooks. Each webhook should have a **secret key** for HMAC verification to ensure security.
-- **HMAC Signature Validation:** Every webhook payload includes an `X-Signature` header containing an HMAC hash of the payload using the **secret key**. This ensures the payload comes from the trusted API server and has not been tampered with. 
-- **TLS/HTTPS:** Webhooks must be delivered over HTTPS (Hypertext Transfer Protocol Secure) to encrypt data in transit and ensure payload integrity.
-- **Replay Protection:** Timestamps and unique `event_id` are included in payloads to prevent processing of old or duplicate events. Events older than a short threshold are rejected
-- **Rate Limiting:** Clients are limited to a maximum number of webhook events per minute (e.g., 120 requests/min) to prevent abuse and ensure reliability. 
+- **Authentication & Authorization:** Only clients with valid access tokens are able to register for webhooks. Each webhook requires a secret key for HMAC verification in order to ensure security.
+- **Verification of HMAC Signatures:** An HMAC hash of the payload using the secret key is contained in the `X-Signature` header of every webhook payload. This ensures that the payload is legitimate and comes from the trustworthy API server. 
+- **TLS/HTTPS:** Webhooks must be delivered via HTTPS (Hypertext Transfer Protocol Secure) in order to encrypt data in transit and ensure payload integrity.
+- **Protection for Replay:** Payloads avoid processing duplicate or out-of-date events by including timestamps and a unique `event_id`. Events are disqualified if they surpass a short threshold.
+- **Rate Limiting:** Clients are limited to a maximum number of webhook events per minute (e.g., 120 requests/min) to prevent abuse and ensure reliability.
 
-### Reliability Considerations
+### Considerations for Reliability
 
-- **Retry Mechanisms:**The webhook system ensures events reach the client server reliably, even if something temporarily fails. If the client’s server returns a 5xx error code or times out, the API retries delivery (e.g.,: exponential backoff). 
-- **Idempotency:** Each webhook has an unique `event_id`, so that clients can safely process retries without duplication. Even if an event is retired, the server can detect duplicates and process it only once.
-- **Event Ordering:** Clients will register a webhook URL with the API, which pushes events to this URL as they occur (e.g.,, mission updates, vessel telemetry). Mission-critical events may arrive out of order, so clients should implement ordering logic if needed.
-- **Monitoring & Logging:** API logs webhook delivery attempts and responses for troubleshooting and auditing purposes.
+- **Retry Mechanisms:** Even in the event of a brief failure, the webhook system guarantees that events consistently reach the client server. The API tries delivery again if the client's server times out or returns a 5xx error code (e.g., exponential backoff). 
+- **Idempotency:** Because every webhook has a distinct `event_id`, clients can process retries safely and without duplication. The server can identify duplicates and process an event only once, even if it has been retired.
+- **Event Ordering:** The API allows clients to register a webhook URL, which is then used to push events (such as mission updates and vessel telemetry) to this URL as they happen. Clients should use ordering logic if necessary because mission-critical events might arrive out of order.
+- **Monitoring & Logging:** For the purposes of troubleshooting and auditing, the API records webhook delivery attempts and responses.
 
-### Critical vs Optional Events
+### Important vs. Optional Occasions
 
-**Critical Events** — require immediate attention or trigger downstream actions:
-- `mission.status_changed` — mission progress and safety-critical actions.
-- `vessel.alert` — hardware faults, low battery, or comms errors.
-- `mission.completed` — mission finished, triggers logging, reporting, or next steps.
+**Critical Events** — need to be addressed right away or cause subsequent actions:
+- `mission.status_changed` — safety-critical actions and mission progress.
+- `vessel.alert` — communications errors, low battery, or hardware issues.
+- `mission.completed` — mission completed, initiates reporting, logging, or subsequent actions.
 
-**Optional Events** — useful and/or informational, but not time-sensitive.
-- `mission.created` — a new mission was registered
-- `mission.updated` — changes to mission parameters
-- `vessel.telemetry` — routine telemetry updates (position, speed, battery)
-- `vessel.sensor_data` — sensor-specific data for analysis purposes
-- `log.entry` — general logging, warnings, or info messages.
+Events That Are Optional — not urgent, but helpful and/or instructive.
+- `mission.created` — a new mission was registered - `mission.updated` — modifications to the mission's parameters
+- `vessel.telemetry` — regular telemetry updates (battery, position, and speed)
+- `vessel.sensor_data` — sensor-specific information for analysis
+- `log.entry` — info messages, warnings, or general logging.
