@@ -14,7 +14,7 @@ Welcome to my technical writing portfolio! Here, you’ll find examples of work 
 ---
 
 ## How to Use This Portfolio
-Visit the [Technical Writing branch](https://github.com/laureneolin/portfolio/Technical-Writing) to view my work. Feel free to explore and see examples of my structure, clarity, and attention to detail.
+Visit the [Technical Writing branch](https://github.com/laureneolin/Portfolio/tree/Technical-Writing) to view my work. Feel free to explore and see examples of my structure, clarity, and attention to detail.
 
 ---
 
