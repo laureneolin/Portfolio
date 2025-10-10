@@ -7,9 +7,7 @@ Welcome to my technical writing portfolio! Here, you’ll find examples of work 
 ## Portfolio Highlights
 - **[API Reference Example](https://github.com/laureneolin/portfolio/blob/Technical-Writing/Mission_Control_API_Reference_Guide.md):** A sample API documentation showing endpoints, parameters, and usage guidelines.
 - **[System Overview + Integration Guide](https://github.com/laureneolin/portfolio/blob/Technical-Writing/System_Overview_Integration_Guide.md):** High-level system explanations paired with step-by-step integration instructions.
-- **Quick Start Manual:** A concise guide to help users get up and running with a product efficiently.
-- **Configuration Checklist:** Practical, easy-to-follow checklists for system setup and configuration.
-- **Style Guide:** Documentation of writing standards, formatting rules, and style conventions.
+- **[Quick Start Manual](https://github.com/laureneolin/Portfolio/blob/Technical-Writing/Quick_Start_Manual.md):** A concise guide to help users get up and running with a product efficiently.
 
 ---
 
