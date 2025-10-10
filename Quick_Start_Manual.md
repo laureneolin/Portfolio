@@ -7,7 +7,7 @@ The Autonomous Fleet Coordination System (AFCS) API Quick Start Guide explains h
 - Possession of a REST client (such as curl or Postman)
 - A fundamental knowledge of JSON and REST APIs.
 
-Token handling, authentication, and a test mission request are the main topics of this guide. Consult the *System Overview and Integration Guide* for a more thorough explanation of configuration and integration.
+Token handling, authentication, and a test mission request are the main topics of this guide. Consult the *[System Overview and Integration Guide](https://github.com/laureneolin/portfolio/blob/Technical-Writing/System_Overview_Integration_Guide.md)* for a more thorough explanation of configuration and integration.
 
 **Estimated Time: About 15-30 minutes**     
 
@@ -314,7 +314,7 @@ Use the `/missions/status` endpoint to verify that the mission is proceeding suc
 Request:
 
 ```http
-`GET` https://api.afcs.com/v1/missions/status?mission_id=MC-17269
+GET https://api.afcs.com/v1/missions/status?mission_id=MC-17269
 Authorization: Bearer eor4nuy1309
 ```
 
@@ -338,7 +338,7 @@ Verify that the activity corresponds to the mission status using the `vessels/te
 Request:
 
 ```http
-`GET` https://api.afcs.com/v1/vessels/telemetry?vessel_id=UUV-013
+GET https://api.afcs.com/v1/vessels/telemetry?vessel_id=UUV-013
 Authorization: Bearer eor4nuy1309
 ```
 
@@ -408,6 +408,4 @@ By this point, you should have successfully authenticated, issued commands, and 
 - **Advance operations** — Explore more complicated endpoints for requests such as multi-vessel coordination.
 
 
-For a more advanced walkthrough of AFCS and its capabilities, please refer to the *System Overview and Integration Guide*.
-
-
+For a more advanced walkthrough of AFCS and its capabilities, please refer to the *[System Overview and Integration Guide](https://github.com/laureneolin/portfolio/blob/Technical-Writing/System_Overview_Integration_Guide.md)*.
