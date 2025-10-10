@@ -139,7 +139,7 @@ Using a valid `client_id` and `client_secret`, tokens are acquired via `POST /au
 ### Example: Obtain a Token
 
 **Request:**
-```json
+```http
 POST /auth/token
 {
   "client_id": "testing",
@@ -156,7 +156,7 @@ POST /auth/token
 ```
 
 All subsequent requests must include this token in the `Authorization` header:
-```json
+```http
 Authorization: Bearer gfamedorn12998
 ```
 
@@ -182,8 +182,8 @@ GET /v1/missions/0987
 Authorization: Bearer gfamedorn12998
 ```
 ### Example: Rate Limit Exceeded
-```
-HTTP/1 429 Too Many Requests
+```http
+HTTP/1.1 429 Too Many Requests
 Retry-After: 30
 Content-Type: application/json
 
@@ -403,5 +403,6 @@ Events That Are Optional — not urgent, but helpful and/or instructive.
 - `vessel.telemetry` — regular telemetry updates (battery, position, and speed)
 - `vessel.sensor_data` — sensor-specific information for analysis
 - `log.entry` — info messages, warnings, or general logging.
+
 
 
