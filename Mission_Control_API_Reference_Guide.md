@@ -217,15 +217,15 @@ The client can **create, launch, abort, list, and get details about specific mis
 ```json
 {
   "mission_name": "Harbor Sweep Alpha",
-  "priority": "routine",             // see Mission Priority Enum
-  "vessel_id": "ASV-00012",             // see Vessel Types
+  "priority": "routine"
+  "vessel_id": "ASV-00012",
   "start_time": "2025-10-06T08:00:00Z",
   "end_time": "2025-10-06T12:00:00Z",
   "waypoints": [
     {"lat": 27.9506, "lon": -82.4572, "alt": 0},
     {"lat": 27.9512, "lon": -82.4601, "alt": 0}
   ],
-  "behavior": { "mode": "autonomous", "fail_safe": "return_to_base" },     // see Fail-Safe Modes
+  "behavior": { "mode": "autonomous", "fail_safe": "return_to_base" },
   "metadata": {"customer_job_id": "CJ-555"}
 }
 ```
@@ -253,7 +253,7 @@ The client will be able to **receive lists, register, and receive details for a 
 
 ```json
 {
-"vessel_id": "ASV-00012",      // see Vessel Types
+"vessel_id": "ASV-00012",
   "timestamp": "2025-10-06T08:43:00Z",
   "position": {"lat": 27.9510, "lon": -82.4585},
   "heading_deg": 94.3,
@@ -279,7 +279,7 @@ The client can **receive and update parameters** via the `system` endpoint. *Not
   "max_speed_knots": 8.0,
   "comms_timeout_s": 30,
   "mission_concurrency_limit": 5,
-  "default_fail_safe": "return_to_base"     // see Fail-Safe Modes
+  "default_fail_safe": "return_to_base"
 }
 ```
 
@@ -403,4 +403,5 @@ Events That Are Optional — not urgent, but helpful and/or instructive.
 - `vessel.telemetry` — regular telemetry updates (battery, position, and speed)
 - `vessel.sensor_data` — sensor-specific information for analysis
 - `log.entry` — info messages, warnings, or general logging.
+
 
