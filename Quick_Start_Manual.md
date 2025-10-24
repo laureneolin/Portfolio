@@ -2,12 +2,13 @@
 
 The Autonomous Fleet Coordination System (AFCS) API Quick Start Guide explains how to send your first mission command and establish a connection to the AFCS API. You will have mastered the fundamentals of this system by the end, including how to authenticate, obtain an access token, and submit a simple request.
 
-### Make sure you have the following before you begin:
+### Prerequisites:
 - An AFCS developer account; the client ID and secret that you were given for the API
 - Possession of a REST client (such as curl or Postman)
 - A fundamental knowledge of JSON and REST APIs.
 
-Token handling, authentication, and a test mission request are the main topics of this guide. Consult the *[System Overview and Integration Guide](https://github.com/laureneolin/portfolio/blob/Technical-Writing/System_Overview_Integration_Guide.md)* for a more thorough explanation of configuration and integration.
+>[!NOTE]
+>Token handling, authentication, and a test mission request are the main topics of this guide. Consult the *[System Overview and Integration Guide](https://github.com/laureneolin/portfolio/blob/Technical-Writing/System_Overview_Integration_Guide.md)* for a more thorough explanation of configuration and integration.
 
 **Estimated Time: About 15-30 minutes**     
 
@@ -17,22 +18,22 @@ Everyone must authenticate their client and request an access token before they 
 
 ### Step 1: Get Your API Login Information
 
-Your system administrator or the Developer Portal will provide you with a Client ID and Client Secret when your AFCS account is created.
+Your system administrator or the Developer Portal will provide you with a Client ID and Client Secret when your AFCS account is created. 
 
 - **Client ID — Identifies you to the AFCS**
 
 - **Client Secret — Authenticates and authorizes access to the API**
 
-*Remember: keep these credentials safe. They should never be kept in a format that only you can access, such as plain text, publicly shared, or version controlled.*
+>[!NOTE]
+>Keep these credentials safe. They should never be kept in a format that only you can access, such as plain text, publicly shared, or version controlled.
 
 ### Step 2. Request an Access Token
 
-The AFCS authenticates users using OAuth 2.0 client credentials. Send a `POST` request to the application's `/auth/token` endpoint with your Client ID and Secret.
+The AFCS authenticates users using OAuth 2.0 client credentials. You will receieve a bearer token — not an API key — because AFCS implements token-based security for safer mission control. To request a token, send a `POST` request to the application's `/auth/token` endpoint with your Client ID and Secret.
 
 **Example**
 
 Request:
-
 ```http
 POST https://api.afcs.com/auth/token
 Content-Type: application/json
@@ -44,7 +45,6 @@ Content-Type: application/json
 ```
 
 Response:
-
 ```json
 {
   "access_token": "eor4nuy1309",
@@ -52,7 +52,24 @@ Response:
   "expires_in": 3600
 }
 ```
-*Remember: Tokens are temporary and will become invalid after a set period of time. The `expires_in` field indicates how long the token is valid before having to get a new one.*
+>[!NOTE]
+>Tokens are temporary and will become invalid after a set period of time. The `expires_in` field indicates how long the token is valid before having to get a new one.
+
+**Try It Out**
+```bash
+curl -X POST "https://api.afcs.com/auth/token" 
+  -H "Content-Type: application/json" 
+  -d '{
+    "client_id": "your-client-id",
+    "client_secret": "your-client-secret"
+  }'
+```
+
+>[!TIP]
+>Replace `"your-client-id"` with your Client ID & `"your-client-secret"` with your Client Secret that were provided to you by your System Administrator.
+
+>[!NOTE]
+>`-d` signals to include data to post and sends the JSON payload in the request body
 
 ### Step 3. Secure the Token Securely
 
@@ -61,25 +78,41 @@ Store the returned `access_token` in a secure location (e.g., environment variab
 **Example**
 
 Header Format:
-
 ```http
 Authorization: Bearer eor4nuy1309
 ```
+
+**Try It Out**
+```bash
+curl -X GET "https://api.afcs.com/v1/missions/status?mission_id=MC-17269"
+  -H "Authorization: Bearer eor4nuy1309"
+```
+>[!NOTE]
+>- `-X GET` explicitly defines the HTTP method, but is optional, since `GET` is the default for curl.
+>- Quotes around the URL prevent shell interpretation issues.
+> `-H` submits your header.
 
 ### Step 4. Verify Authentication
 
 You can send a simple request to the `/status` endpoint to verify that your token is valid.
 
 **Example**
-
 ```http
 GET https://api.afcs.com/status
 Authorization: Bearer eor4nuy1309
 ```
+##### **Possible Responses:**
 - `200 OK` — Token is valid and API access is confirmed.
-- `401 Unauthorized` — Token is missing, invalid, or expired 
+- `401 Unauthorized` — Token is missing, invalid, or expired
 
-*Remember: If your token expires, you must re-authenticate yourself using your Client ID and Secret to access a new token.*
+**Try It Out**
+```bash
+curl -X GET "https://api.afcs.com/status"
+  -H "Authorization: Bearer eor4nuy1309"
+```
+
+>[!TIP]
+>If your token expires, you must re-authenticate yourself using your Client ID and Secret to access a new token.
 
 ## Issue First Request
 
@@ -92,14 +125,12 @@ Decide which vessel you wish to command. Each vessel is assigned a unique `vesse
 **Example**
 
 Request:
-
 ```http
 GET https://api.afcs.com/v1/vessels
 Authorization: Bearer eor4nuy1309
 ```
 
 Response:
-
 ```json
 [
   {
@@ -114,7 +145,14 @@ Response:
   }
 ]
 ```
-*Remember: Use the `vessel_id` from this response in all related command requests.*
+
+**Try It Out**
+```bash
+curl -X GET "https://api.afcs.com/v1/vessels"
+  -H "Authorization: Bearer eor4nuy1309"
+```
+>[!TIP]
+>Use the `vessel_id` from this response in all related command requests.
 
 ### Step 2. Create Your Command Request
 
@@ -123,8 +161,6 @@ Commands are sent via the `/missions/command` endpoint using a `POST` request. I
 **Example**
 
 Request:
-
-
 ```http
 POST https://api.afcs.com/v1/missions/command
 Content-Type: application/json
@@ -144,7 +180,6 @@ A successful request returns a `200 OK` response with details about the command 
 **Example**
 
 Response:
-
 ```json
 {
   "mission_id": "MC-17269",
@@ -154,12 +189,13 @@ Response:
 }
 ```
 
-**Common Errors:**
+##### **Common Errors:**
 - `403 Forbidden` — Your token does not have permission to access this vessel.
 - `429 Too Many Requests` — You are sending commands too quickly; respect the rate limits
 - `500 Internal Server Error` — An unexpected issue occurred, retry the command or check the system status.
 
-*Remember: Rate limit means the amount of requests you are able to send in a period of time. Exceeding the limit temporarily blocks subsequent requests.*
+>[!NOTE]
+>Rate limit means the amount of requests you are able to send in a period of time. Exceeding the limit temporarily blocks subsequent requests.
 
 ### Step 4. Confirm the Command
 
@@ -168,13 +204,19 @@ Verifying the vessel’s stats or mission progress is something you can do by se
 **Example**
 
 Request:
-
 ```http
 GET https://api.afcs.com/v1/missions/status?mission_id=MC-17269
 Authorization: Bearer eor4nuy1309
 ```
 
-*Remember: This guarantees that your command has been accepted and the mission is going as expected.*
+**Try It Out**
+```bash
+curl -X GET "https://api.afcs.com/v1/missions/status?mission_id=MC-17269"
+  -H "Authorization: Bearer eor4nuy1309"
+```
+
+>[!NOTE]
+>This confirms that your command was received and processed and that the mission has entered an active or completed state.
 
 
 ## Monitoring Mission Data & Vessel Status
@@ -188,14 +230,12 @@ Requests are sent via `GET` to the `/missions/status` endpoint, inputting the `m
 **Example**
 
 Request:
-
 ```http
 GET https://api.afcs.com/v1/missions/status?mission_id=MC-17269
 Authorization: Bearer eor4nuy1309
 ```
 
 Response:
-
 ```json
 {
   "mission_id": "MC-17269",
@@ -206,10 +246,17 @@ Response:
 }
 ```
 
-*Remember: `progress: {%}` indicates the completeness percentage of the mission. It represents how far along the vessel is in executing the assigned mission.*
-- `0` *— Mission hasn’t begun or just started.*
-- `50` *— Mission is halfway complete.*
-- `100` *— Mission is complete.*
+**Try It Out**
+```bash
+curl -X GET "https://api.afcs.com/v1/missions/status?mission_id=MC-17269"
+  -H "Authorization: Bearer eor4nuy1309"
+```
+
+>[!NOTE]
+>`progress: {%}` indicates the completeness percentage of the mission. It represents how far along the vessel is in executing the assigned mission.
+>- `0` — Mission hasn’t begun or just started.
+>- `50` — Mission is halfway complete.
+>- `100` — Mission is complete.
 
 ### Step 2. Vessel Telemetry
 
@@ -218,14 +265,12 @@ To stream live or recent telemetry (e.g, location, speed, system health, status)
 **Example**
 
 Request:
-
 ```http
 GET https://api.afcs.com/v1/vessels/telemetry?vessel_id=UUV-013
 Authorization: Bearer eor4nuy1309
 ```
 
 Response:
-
 ```json
 {
   "vessel_id": "UUV-013",
@@ -237,6 +282,12 @@ Response:
 }
 ```
 
+**Try It Out**
+```bash
+curl -X GET "https://api.afcs.com/v1/vessels/telemetry?vessel_id=UUV-013"
+  -H "Authorization: Bearer eor4nuy1309"
+```
+
 ### Step 3. Filtering & Query Parameters
 
 To focus on the data you need, both the`mission_status` and `/vessels/telemetry` endpoints support filtering and query parameters (e.g, specific time windows, vessel IDs, telemetry types)
@@ -244,22 +295,33 @@ To focus on the data you need, both the`mission_status` and `/vessels/telemetry`
 **Example — Mission Status with Time Filter**
 
 Request:
-
 ```http
 GET https://api.afcs.com/v1/missions/status?mission_id=MC-17269&from=2025-10-07T12:00:00Z&to=2025-10-07T13:00:00Z
 Authorization: Bearer eor4nuy1309
 ```
 
+**Try It Out**
+```bash
+curl -X GET "https://api.afcs.com/v1/missions/status?mission_id=MC-17269&from=2025-10-07T12:00:00Z&to=2025-10-07T13:00:00Z"
+  -H "Authorization: Bearer eor4nuy1309"
+```
+
 **Example — Telemetry Filter by System Health**
 
 Request:
-
 ```http
 GET https://api.afcs.com/v1/vessels/telemetry?vessel_id=UUV-013&filter=system_health:nominal
 Authorization: Bearer eor4nuy1309
 ```
 
-*Remember: Filtering helps reduce unnecessary data transfer and makes analysis more efficient. You can also combine more than one parameter to narrow your scope.*
+**Try It Out**
+```bash
+curl -X GET "https://api.afcs.com/v1/vessels/telemetry?vessel_id=UUV-013&filter=system_health:nominal"
+  -H "Authorization: Bearer eor4nuy1309"
+```
+
+>[!TIP]
+>Filtering helps reduce unnecessary data transfer and makes analysis more efficient. You can also combine more than one parameter to narrow your scope.
 
 ### Step 4. Response Interpretation
 
@@ -304,24 +366,30 @@ You must verify that the system is reacting appropriately and that the mission a
 Use the `/missions/status` endpoint to verify that the mission is proceeding successfully.
 
 **Checklist:**
-- The `status` field changes from `pending` to `in_progress` to `completed`.
-- The `progress` percentage increases.
-- The `last_update` timestamp periodically refreshes.
+- [x] The `status` field changes from `pending` to `in_progress` to `completed`.
+- [x] The `progress` percentage increases.
+- [x] The `last_update` timestamp periodically refreshes.
 
 
 **Example**
 
 Request:
-
 ```http
 GET https://api.afcs.com/v1/missions/status?mission_id=MC-17269
 Authorization: Bearer eor4nuy1309
 ```
 
-**Expected Response:**
+##### **Expected Response:**
 - An updated `progress` field or `status` change
 
-*Remember: If `progress` does not change for multiple refreshes, review the data or flag for system diagnostics.*
+**Try It Out**
+```bash
+curl -X GET "https://api.afcs.com/v1/missions/status?mission_id=MC-17269"
+  -H "Authorization: Bearer eor4nuy1309"
+```
+
+>[!TIP]
+>If `progress` does not change for multiple refreshes, review the data or flag for system diagnostics.
 
 
 ### Step 2. Cross-Check Telemetry
@@ -329,20 +397,28 @@ Authorization: Bearer eor4nuy1309
 Verify that the activity corresponds to the mission status using the `vessels/telemetry` endpoint.
 
 **Checklist:**
-- The vessel's `status` should correspond with the mission's `status` (e.g., `active` when mission is `in_progress`).
-- When there is movement during missions, `coordinates` and `speed` should change.
-- Unless there is an operational problem, `system_health` should stay at `nominal`.
+- [x] The vessel's `status` should correspond with the mission's `status` (e.g., `active` when mission is `in_progress`).
+- [x] When there is movement during missions, `coordinates` and `speed` should change.
+- [x] Unless there is an operational problem, `system_health` should stay at `nominal`.
 
 **Example**
 
 Request:
-
 ```http
 GET https://api.afcs.com/v1/vessels/telemetry?vessel_id=UUV-013
 Authorization: Bearer eor4nuy1309
 ```
+>[!TIP]
+>If the mission shows `completed` but the data indicates any activity, wait a moment before confirming the final status; telemetry data can lag behind communication execution.
 
-*Remember: If the mission shows `completed` but the data indicates any activity, wait a moment before confirming the final status; telemetry data can lag behind communication execution.*
+**Try It Out**
+```bash
+curl -X GET "https://api.afcs.com/v1/vessels/telemetry?vessel_id=UUV-013" \
+  -H "Authorization: Bearer eor4nuy1309"
+```
+
+>[!TIP]
+>Always include quotes around the URL when query parameters (`?`) are present to prevent shell interpretation issues.
 
 ### Step 3. Observe for Anomalies
 
@@ -350,18 +426,17 @@ Monitoring live feedback helps rely on system accuracy.
 
 
 **Common Inconsistencies Include:**
-
 - Telemetry data is unchanged during an active mission.
 - Mission status becomes `failed` without warning.
 - Timestamps are not updating and only showing past reporting.
 
 **If Anomalies Occur:**
-
 - Log both mission and data responses.
 - Verify timestamps to ensure you are not reviewing outdated, cached, or delayed data.
 - Retry requests after a 10-15 second interval to confirm if the issue is temporary or continuing.
 
-*Remember: Verification is about identifying the early warning signs of delays, faults, or other issues within communication, the system, or the vessel before they affect missions.*
+>[!NOTE]
+>Verification is about identifying the early warning signs of delays, faults, or other issues within communication, the system, or the vessel before they affect missions.
 
 
 ## Troubleshooting Tips
@@ -369,43 +444,40 @@ Monitoring live feedback helps rely on system accuracy.
 Even if you follow all the correct authentication and command steps, errors and unexpected responses may still occur. The tips below will help you to troubleshoot problems before they become more serious..
 
 **Receiving Missing Updates or No Mission Progress:**
-
 - Confirm that the `mission_id` and `vessel_id` are correct and active.
 - Check timestamps with the `last_update` field; if unchanged, retry a status check after 15-30 seconds.
 - Review telemetry for any vessel inactivity or system warnings
 
 **Errors With Authentication or Authorization:**
-
 - Re-authenticate after a `401 Unauthorized` or `403 Forbidden` response.
 - Make sure your access token did not expire and that it carries the level of permission required..
 
 **Telemetry Data is Inconsistent, Delayed, or Unchanged:**
-
 - Compare timestamps between mission and telemetry endpoints.
 - If the timestamp values don’t update, refresh the data and verify the request URL and parameters.
 Avoid sending requests too often, spread them out by 15-30 seconds.
 
 **Unexpected Mission Failure:**
-
 - Check for logged error codes or messages in the mission response.
 - Use the data to identify whether the issue was system-related or vessel-related.
 - If the type of failure allows for safe, repeated requests, retry the command.
 
 **Errors With Rate Limits or Timeouts**
-
 - If you receive a `429 Too Many Requests` response, request after the allotted time given by `Retry-After` has passed.
 - For `500 Internal Server Error` or a timeout, perform exponential backoff and retry after 15-30 seconds.
 
-*Remember: Always keep your logs detailed. Record `mission_id`, `vessel_id`, `timestamp`, and `error_code` to help with faster troubleshooting if issues arise.*
+>[!TIP]
+>Always keep your logs detailed. Record `mission_id`, `vessel_id`, `timestamp`, and `error_code` to help with faster troubleshooting if issues arise.
 
 ## Next Steps
 
 By this point, you should have successfully authenticated, issued commands, and monitored missions. You also should know exactly what to do if issues arise. It is now time to build on these basics.
-
 - **Automate workflows** — Use the mission and telemetry endpoints to schedule or script recurring missions.
 - **Integrate systems** — Connect AFCS data to other dashboards and monitoring tools.
 - **Log and analyze data** — Track and learn from performance over time to identify trends, strengths, and weaknesses to improve reliability.
 - **Advance operations** — Explore more complicated endpoints for requests such as multi-vessel coordination.
 
+>[!NOTE]
+>For a more advanced walkthrough of AFCS and its capabilities, please refer to the *[System Overview and Integration Guide](https://github.com/laureneolin/portfolio/blob/Technical-Writing/System_Overview_Integration_Guide.md)*.
 
-For a more advanced walkthrough of AFCS and its capabilities, please refer to the *[System Overview and Integration Guide](https://github.com/laureneolin/portfolio/blob/Technical-Writing/System_Overview_Integration_Guide.md)*.
+
